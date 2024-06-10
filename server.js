@@ -31,6 +31,7 @@ const slipHistoryRoutes = require('./routes/slipRoute');
 const saveSlip = require('./controllers/createSlipProductController')
 const getPurchaseHistoryByEmail = require('./controllers/getSlipProductController')
 
+const dashboardRoutes = require('./routes/dashboardRoutes');
 const cors = require("cors");
 
 app.use(express.json());
@@ -83,6 +84,39 @@ app.get('/api/getPurchaseHistoryByEmail/:email', getPurchaseHistoryByEmail);
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome Kmutt");
+});
+
+
+const cron = require('node-cron');
+const SlipHistory = require('./models/slipHistoryModel');
+app.use('/api/dashboard', dashboardRoutes);
+// Schedule tasks to be run on the server
+cron.schedule('0 0 * * *', async () => {
+  try {
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    const totalAmount = await SlipHistory.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: startOfToday, $lte: endOfToday },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$amount' },
+        },
+      },
+    ]);
+
+    // You can log this amount or save it to a database or send an email, etc.
+    console.log(`Total top-ups today: ${totalAmount[0]?.total || 0}`);
+  } catch (error) {
+    console.error('Error in cron job:', error);
+  }
 });
 
 app.listen(port, () => {
