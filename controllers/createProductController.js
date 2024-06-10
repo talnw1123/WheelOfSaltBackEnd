@@ -56,6 +56,7 @@ const createProduct = (req, res) => {
             minDegree: item.minDegree,
             maxDegree: item.maxDegree,
             information: item.information || [], // Ensure information is an array
+            probability: item.probability || 0, // New field
           })),
         });
   
@@ -66,5 +67,4 @@ const createProduct = (req, res) => {
     });
   };
   
-
 module.exports = createProduct;

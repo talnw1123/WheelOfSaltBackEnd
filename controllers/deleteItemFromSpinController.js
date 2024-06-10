@@ -1,5 +1,4 @@
 const Product = require('../models/productModel'); // Adjust the path as needed
-const upload = require('../uploads/upload'); // Adjust the path as needed
 
 const deleteItemFromSpin = async (req, res) => {
   try {
@@ -18,6 +17,7 @@ const deleteItemFromSpin = async (req, res) => {
         minDegree: item.minDegree,
         maxDegree: item.maxDegree,
         information: item.information || [], // Ensure information is an array
+        probability: item.probability // Preserve the probability field
       }));
       product.items = parsedItems;
     }

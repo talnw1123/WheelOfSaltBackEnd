@@ -4,7 +4,7 @@ const multer = require('multer');
 
 const { createSlipHistory } = require('../controllers/createSlipHistoryController');
 const { getAllSlipHistories } = require('../controllers/getAllSlipHistoriesController');
-const { getSlipHistoryById } = require('../controllers/getSlipHistoryByIdController');
+const { getSlipHistoryByEmail } = require('../controllers/getSlipHistoryByIdController');
 const { updateSlipHistoryStatus} = require('../controllers/updateSlipHistoryStatus')
 // Set up multer for file uploads
 
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 // Define routes
 router.post('/createSlipHistory', upload.single('slipImage'), createSlipHistory);
 router.get('/getAllSlipHistories', getAllSlipHistories);
-router.get('/getSlipHistoryById/:id', getSlipHistoryById);
+router.get('/getSlipHistoryByEmail/:email', getSlipHistoryByEmail);
 router.post('/updateSlipHistoryStatus/:id', updateSlipHistoryStatus);
 
 module.exports = router;

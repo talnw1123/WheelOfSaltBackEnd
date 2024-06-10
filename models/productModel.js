@@ -21,6 +21,11 @@ const itemSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
+  probability: { // New field
+    type: Number,
+    required: true,
+    default: 0,
+  }
 });
 
 const productSchema = new mongoose.Schema({
@@ -61,6 +66,10 @@ const productSchema = new mongoose.Schema({
 });
 
 itemSchema.plugin(AutoIncrement, {inc_field: 'id', id: 'item_id_counter'});
+
+productSchema.methods.isOutOfStock = function() {
+  return this.items.length === 0 || this.items.some(item => item.information.length === 0 || item.information.some(info => !info));
+};
 
 const Product = mongoose.model('Product', productSchema);
 

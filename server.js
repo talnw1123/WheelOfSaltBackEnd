@@ -27,6 +27,10 @@ const deleteItemFromSpin = require('./controllers/deleteItemFromSpinController')
 const deleteProduct = require('./controllers/deleteProductController')
 
 const slipHistoryRoutes = require('./routes/slipRoute');
+
+const saveSlip = require('./controllers/createSlipProductController')
+const getPurchaseHistoryByEmail = require('./controllers/getSlipProductController')
+
 const cors = require("cors");
 
 app.use(express.json());
@@ -74,6 +78,8 @@ app.post('/api/deleteItemFromSpin/:_id', deleteItemFromSpin );
 app.delete('/api/deleteProduct/:_id',deleteProduct)
 
 app.use('/api', slipHistoryRoutes);
+app.post('/api/saveSlip', saveSlip);
+app.get('/api/getPurchaseHistoryByEmail/:email', getPurchaseHistoryByEmail);
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome Kmutt");
